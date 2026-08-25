@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MojiAtelier サポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; line-height: 1.8;
+  }
+  h1 { border-bottom: 3px solid #5B8DEF; padding-bottom: .4rem; }
+  h2 { margin-top: 2.5rem; color: #5B8DEF; }
+  footer { margin-top: 4rem; font-size: .85rem; opacity: .7; }
+  a { color: #3F6FD6; }
+  dt { font-weight: bold; margin-top: 1rem; }
+  code { font-family: Menlo, monospace; font-size: .9em; }
+</style>
+</head>
+<body>
+<h1>MojiAtelier サポート</h1>
+<p>MojiAtelier（モジアトリエ）は、Windows で作られた古い日本語テキストを Mac で安全に編集するための、シンプルなテキストエディタです。文字コード（UTF-8 / Shift-JIS / EUC-JP / JIS）と改行コード（CRLF / LF）を自動で見分け、開いたときのまま保存します。</p>
+
+<h2>使い方</h2>
+<ol>
+  <li>ツールバーの「開く」（⌘O）でファイルを選ぶか、Finder で .txt / .html をダブルクリックして開きます。</li>
+  <li>画面下に、判別した文字コードと改行コードが表示されます。</li>
+  <li>編集して「上書」（⌘S）を押すと、開いたときと同じ文字コード・改行コードで保存されます。</li>
+  <li>形式を変えて保存したいときは、画面下のメニューで文字コード・改行コード・拡張子を選び直してから「保存」（⇧⌘S）します。</li>
+</ol>
+
+<h2>よくある質問</h2>
+<dl>
+  <dt>Q. 開いたら文字化けしていました</dt>
+  <dd>A. 自動判別が外れた可能性があります。現状では判別結果を手で選び直す機能はありません。お手数ですが、そのファイルを <a href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a> へお送りいただければ判別の改善に役立てます（内容が差し支えない場合のみ）。</dd>
+  <dt>Q. 「改行表示」を押すと本文に記号が書き込まれますか？</dt>
+  <dd>A. いいえ。改行マークは画面上に描くだけで、本文にもコピーにも保存内容にも含まれません。</dd>
+  <dt>Q. Windows で開いたときに改行が消えないようにするには？</dt>
+  <dd>A. 画面下の「改行」が CRLF になっていれば、Windows のメモ帳でも正しく改行されます。Windows で作られたファイルを開いた場合は自動で CRLF になります。</dd>
+  <dt>Q. 検索や置換はできますか？</dt>
+  <dd>A. ⌘F で画面上部に検索バーが開きます。バー右端の「置き換え」にチェックを入れると置換欄が出ます。</dd>
+  <dt>Q. ファイルを開くたびにウインドウが増えます</dt>
+  <dd>A. 現在の仕様です。不要なウインドウは ⌘W で閉じてください。未保存の変更があれば確認が出ます。</dd>
+  <dt>Q. 対応している文字コードは？</dt>
+  <dd>A. 読み込み・保存とも UTF-8（BOM あり／なし）、Shift-JIS（CP932 を含む）、EUC-JP、JIS（ISO-2022-JP）です。</dd>
+</dl>
+
+<h2>お問い合わせ</h2>
+<p>不具合のご報告やご要望は <a href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a> までお寄せください。</p>
+<p><a href="privacy.html">プライバシーポリシー</a></p>
+
+<footer>© 2026 Hideki Sato — MojiAtelier</footer>
+</body>
+</html>
