@@ -10,17 +10,106 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "文字アトリエ", "operatingSystem": "macOS, iOS, iPadOS", "applicationCategory": "UtilitiesApplication", "description": "すぐ起動して、すぐ書けるテキストエディタ。文字コードも改行コードも、開いたときのまま保存します。", "url": "https://emchs07-prog.github.io/mojiatelier-support/", "author": {"@type": "Person", "name": "Hideki Sato", "url": "https://emchs07-prog.github.io/"}, "downloadUrl": "https://apps.apple.com/jp/app/id6804944538"}</script>
 <!-- 検索向けの設定（ここまで） -->
 <style>
-  :root { color-scheme: light dark; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-    max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; line-height: 1.8;
+  :root {
+    color-scheme: light dark;
+    --bg:#ffffff; --bg2:#f5f7fb; --card:#ffffff; --text:#14171f; --mute:#5b6475; --line:#e3e7ef;
+    --accent:#3f6fd6; --accent2:#7a5af5; --code:#0b0d12; --codetext:#e8ecf3; --shadow:0 10px 30px rgba(20,30,60,.08);
   }
-  h1 { border-bottom: 3px solid #5B8DEF; padding-bottom: .4rem; }
-  h2 { margin-top: 2.5rem; color: #5B8DEF; }
-  footer { margin-top: 4rem; font-size: .85rem; opacity: .7; }
-  a { color: #3F6FD6; }
-  dt { font-weight: bold; margin-top: 1rem; }
-  code { font-family: Menlo, monospace; font-size: .9em; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0b0d12; --bg2:#11151d; --card:#151a23; --text:#e9edf5; --mute:#9aa4b6; --line:#232a36;
+            --accent:#6f9cff; --accent2:#a28bff; --shadow:0 10px 30px rgba(0,0,0,.35); }
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; scroll-padding-top:72px; }
+  body { margin:0; background:var(--bg); color:var(--text); line-height:1.8;
+         font-family:-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+         -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); }
+  img { max-width:100%; height:auto; }
+  .wrap { max-width:1040px; margin:0 auto; padding:0 24px; }
+  /* 上の帯 */
+  .top { position:sticky; top:0; z-index:10; backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);
+         background:color-mix(in srgb, var(--bg) 82%, transparent); border-bottom:1px solid var(--line); }
+  .top .wrap { display:flex; align-items:center; gap:16px; height:56px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; text-decoration:none; color:var(--text); white-space:nowrap; }
+  .brand img { width:28px; height:28px; border-radius:7px; }
+  .top nav { margin-left:auto; display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .top nav a { color:var(--mute); text-decoration:none; font-size:.88rem; padding:6px 10px; border-radius:8px; white-space:nowrap; }
+  .top nav a:hover { color:var(--text); background:var(--bg2); }
+  /* 先頭 */
+  .hero { position:relative; overflow:hidden; text-align:center; padding:72px 0 40px; }
+  .hero::before { content:""; position:absolute; inset:-30% -10% auto; height:120%; z-index:-1; filter:blur(20px);
+    background:radial-gradient(40% 45% at 30% 35%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+               radial-gradient(35% 40% at 72% 30%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 70%); }
+  .hero .icon { width:112px; height:112px; border-radius:25px; box-shadow:var(--shadow); }
+  .hero h1 { font-size:clamp(2.4rem, 6vw, 3.6rem); line-height:1.15; margin:20px 0 4px; letter-spacing:-.01em; font-weight:800; }
+  .hero .yomi { color:var(--mute); font-size:.9rem; margin:0; }
+  .hero .sub { font-size:clamp(1.15rem, 2.6vw, 1.5rem); font-weight:700; margin:14px 0 10px;
+    background:linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .lead { max-width:36em; margin:0 auto; color:var(--mute); }
+  .chips { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:20px 0 0; padding:0; list-style:none; }
+  .chips li { font-size:.82rem; font-weight:600; color:var(--mute); border:1px solid var(--line); background:var(--card); border-radius:999px; padding:3px 12px; }
+  .btns { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:28px 0 0; }
+  .btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; text-decoration:none; border-radius:12px; padding:12px 22px; }
+  .btn.primary { background:var(--text); color:var(--bg); }
+  .btn.ghost { border:1px solid var(--line); color:var(--text); background:var(--card); }
+  .btn:hover { opacity:.88; }
+  .shot-hero { margin:48px auto 0; max-width:960px; }
+  .shot-hero img, .gallery img { display:block; width:100%; border-radius:12px; border:1px solid var(--line); box-shadow:var(--shadow); }
+  .note { max-width:44em; margin:28px auto 0; font-size:.88rem; color:var(--mute); text-align:center; }
+  /* 節 */
+  section.block { padding:64px 0; }
+  section.block.alt { background:var(--bg2); }
+  .eyebrow { display:block; text-align:center; font-size:.78rem; font-weight:700; letter-spacing:.12em; color:var(--accent); margin:0 0 6px; }
+  h2 { text-align:center; font-size:clamp(1.5rem, 3.4vw, 2rem); line-height:1.35; margin:0 0 12px; }
+  .intro { text-align:center; color:var(--mute); max-width:38em; margin:0 auto 36px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 22px 18px; }
+  .card .ic { display:inline-grid; place-items:center; width:40px; height:40px; border-radius:11px; font-size:1.2rem;
+              background:color-mix(in srgb, var(--accent) 14%, transparent); }
+  .card h3 { font-size:1.06rem; margin:12px 0 6px; line-height:1.5; }
+  .card p { margin:0; color:var(--mute); font-size:.94rem; }
+  .card .tag { display:inline-block; font-size:.72rem; font-weight:700; color:var(--accent2); margin-left:6px; vertical-align:2px; }
+  .codes { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:28px 0 0; padding:0; list-style:none; }
+  .codes li { font-family:Menlo, ui-monospace, monospace; font-size:.85rem; background:var(--code); color:var(--codetext); border-radius:8px; padding:4px 12px; }
+  /* 画面 */
+  .gallery { display:grid; grid-auto-flow:column; grid-auto-columns:min(82%, 720px); gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; padding:4px 4px 16px; }
+  .gallery figure { margin:0; scroll-snap-align:center; }
+  .gallery.phone { grid-auto-columns:min(56%, 240px); }
+  .gallery figcaption { font-size:.88rem; color:var(--mute); margin-top:10px; text-align:center; }
+  .gallery-label { font-weight:700; margin:32px 0 12px; }
+  /* 使い方 */
+  .how { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; }
+  .how .card h3 { margin-top:0; font-size:1.15rem; }
+  .how ol { margin:0; padding-left:1.3em; }
+  .how li { margin:0 0 8px; }
+  kbd { font-family:-apple-system, sans-serif; font-size:.82em; border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; padding:0 6px; background:var(--bg2); }
+  .md-list { max-width:760px; margin:0 auto; padding-left:1.3em; }
+  .md-list li { margin:0 0 10px; }
+  .for { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; max-width:860px; margin:0 auto; padding:0; list-style:none; }
+  .for li { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-weight:600; }
+  .for li::before { content:"✓"; color:var(--accent); margin-right:8px; }
+  /* よくある質問 */
+  .faq { max-width:780px; margin:0 auto; }
+  .faq details { background:var(--card); border:1px solid var(--line); border-radius:14px; margin:0 0 10px; }
+  .faq summary { cursor:pointer; list-style:none; padding:16px 48px 16px 20px; font-weight:700; position:relative; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary::after { content:"+"; position:absolute; right:20px; top:50%; transform:translateY(-50%); font-size:1.3rem; color:var(--mute); }
+  .faq details[open] summary::after { content:"−"; }
+  .faq .a { padding:0 20px 16px; color:var(--mute); }
+  .faq .a p { margin:0 0 8px; }
+  /* お問い合わせ */
+  .contact { max-width:640px; margin:0 auto; text-align:center; }
+  .contact .card { padding:28px; }
+  .contact p { margin:0 0 10px; }
+  .other-apps { max-width:780px; margin:0 auto !important; padding:56px 24px 0; }
+  .other-apps h2 { margin-bottom:4px; }
+  .other-apps > p { text-align:center; }
+  .other-apps ul { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:4px 20px; }
+  .other-apps li { line-height:1.5; }
+  footer { text-align:center; color:var(--mute); font-size:.85rem; padding:40px 24px 56px; margin-top:56px; border-top:1px solid var(--line); }
+  @media (max-width:640px) { .top nav { display:none; } .hero { padding-top:48px; } section.block { padding:48px 0; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
 </style>
 <!-- リンクを貼ったときに出る紹介カード（OGP） -->
 <meta property="og:type" content="website">
@@ -33,64 +122,145 @@
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<h1>文字アトリエ</h1>
-<p class="og-card"><img src="og.png" alt="文字アトリエの紹介" width="1200" height="630" style="display:block;width:100%;max-width:720px;height:auto;border-radius:12px;margin:12px 0 24px;"></p>
-<p>文字アトリエ（モジアトリエ）は、すぐ起動して、すぐ書ける、速くてシンプルなテキストエディタです。Mac / iPhone / iPad で使えます。文字コード（UTF-8 / Shift-JIS / EUC-JP / JIS）と改行コード（CRLF / LF）を自動で見分け、開いたときのまま保存します。Markdown（.md）の編集とプレビュー、印刷・PDF 書き出しにも対応しています。</p>
-<p>2026年11月に、アプリの名前を「MojiAtelier」から「文字アトリエ」に変えました。機能と使い方は変わりません。</p>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#"><img src="img/icon.png" alt="" width="28" height="28">文字アトリエ</a>
+  <nav aria-label="ページ内の移動"><a href="#features">特長</a><a href="#screens">画面</a><a href="#howto">使い方</a><a href="#markdown">Markdown</a><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a></nav>
+</div></header>
 
-<h2>使い方（Mac）</h2>
-<ol>
-  <li>ツールバーの「開く」（⌘O）でファイルを選ぶか、Finder で .txt / .html をダブルクリックして開きます。</li>
-  <li>画面下に、判別した文字コードと改行コードが表示されます。</li>
-  <li>編集して「上書」（⌘S）を押すと、開いたときと同じ文字コード・改行コードで保存されます。</li>
-  <li>形式を変えて保存したいときは、画面下のメニューで文字コード・改行コード・拡張子を選び直してから「保存」（⇧⌘S）します。</li>
-</ol>
+<main>
+<section class="hero"><div class="wrap">
+  <img class="icon" src="img/icon.png" alt="文字アトリエのアイコン" width="112" height="112">
+  <h1>文字アトリエ</h1>
+  <p class="yomi">モジアトリエ</p>
+  <p class="sub">すぐ起動して、すぐ書ける。</p>
+  <p class="lead">速くてシンプルなテキストエディタです。思いついたことのメモ、設定ファイルの手直し、Markdown での下書き。毎日の文字の作業を、待たずに、迷わずに済ませられます。Shift-JIS や CRLF のファイルも、開いたときの形式のまま保存します。</p>
+  <ul class="chips"><li>Mac</li><li>iPhone</li><li>iPad</li><li>一度の購入で全部の端末に</li><li>通信なし・データの収集なし</li></ul>
+  <div class="btns">
+    <a class="btn primary" href="https://apps.apple.com/jp/app/id6804944538">App Store で見る</a>
+    <a class="btn ghost" href="#howto">使い方を見る</a>
+  </div>
+  <figure class="shot-hero" style="margin-left:auto;margin-right:auto;"><img src="img/mac-01.jpg" alt="Mac の文字アトリエで Shift-JIS・CRLF のメモを開いたところ。画面下に文字コードと改行コードが出ている" width="1600" height="1000"></figure>
+  <p class="note">2026年11月に、アプリの名前を「MojiAtelier」から「文字アトリエ」に変えました。読み方・機能・使い方は変わりません。</p>
+</div></section>
 
-<h2>使い方（iPhone / iPad）</h2>
-<ol>
-  <li>上の「開く」で、本体・iCloud Drive・外付けストレージのテキストを選んで開きます（「ファイル」アプリでファイルを長押し → 共有 → 文字アトリエ でも開けます）。</li>
-  <li>画面下に、判別した文字コードと改行コードが表示されます。</li>
-  <li>編集して「上書」を押すと、開いたときと同じ文字コード・改行コードで、同じ場所に書き戻します。</li>
-  <li>新しく書いたものは「保存」で名前を付け、保存先のフォルダを選びます。形式を変えたいときは、画面下のメニューで拡張子・改行コード・文字コードを選び直してから保存します。</li>
-</ol>
+<section class="block alt" id="features"><div class="wrap">
+  <span class="eyebrow">FEATURES</span>
+  <h2>シンプルなまま、困らない</h2>
+  <p class="intro">ボタンは新規・開く・上書・保存など、必要なものだけ。そのうえで、テキストを扱うときに困りがちなところを押さえています。</p>
+  <div class="grid">
+    <div class="card"><span class="ic" aria-hidden="true">⚡️</span><h3>起動が速く、迷わない</h3><p>開けばすぐ入力できます。文字数はリアルタイムに表示。未保存のまま閉じようとすると確認が出るので、書いたものを失いません。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">🔤</span><h3>文字コードも改行も、そのまま保存</h3><p>文字コードと改行コード（CRLF／LF）を自動で見分け、画面下に常に表示。「上書」すれば開いたときと同じ形式で保存します。Windows のメモ帳で作ったファイルも、編集後そのまま Windows で開けます。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">💾</span><h3>SD カードや USB メモリを直接編集</h3><p>カードや USB メモリのファイルを開いて、同じファイルに上書きできます。アプリ側に写しは作らないので、カードを外せば iPhone・iPad に中身は残りません。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">🔁</span><h3>形式を変えて保存もできる</h3><p>画面下のメニューで文字コードと改行コードを選び直して保存。古い Shift-JIS のファイルを UTF-8 にそろえる、といった変換も1回の保存で済みます。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">↩️</span><h3>改行や空白がひと目で分かる</h3><p>改行マーク、全角スペース（□）とタブ（→）、行番号を表示できます。どれも画面に描くだけで、本文には何も書き込みません。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">📝</span><h3>Markdown とプレビュー</h3><p>.md では、見出し・太字・表などを1回で入れるボタン列と、書式どおりに見られるプレビューが使えます。Mac と iPad は編集画面と横に並べられます。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">🔍</span><h3>検索と置換・配色・印刷</h3><p>検索と置換、文字の大きさの変更、黒背景とクリーム背景の切り替え、最近使ったファイル（10件）、印刷と PDF への書き出しに対応しています。</p></div>
+    <div class="card"><span class="ic" aria-hidden="true">📱</span><h3>途中で離れても続きから<span class="tag">iPhone・iPad</span></h3><p>保存しないままアプリを離れても、次に開いたときに「編集を続ける」で戻せます。iPad では外付けキーボードの <kbd>⌘</kbd><kbd>S</kbd> などのショートカットも使えます。</p></div>
+  </div>
+  <ul class="codes" aria-label="対応している文字コード"><li>UTF-8</li><li>UTF-8（BOM あり）</li><li>Shift-JIS（CP932）</li><li>EUC-JP</li><li>JIS（ISO-2022-JP）</li><li>CRLF</li><li>LF</li></ul>
+</div></section>
 
-<h2>Markdown</h2>
-<ul>
-  <li>形式が .md のとき、ツールバーの下に記法のボタン列（見出し・太字・箇条書き・番号・引用・リンク・表・コードなど）が出ます。選択した文字を囲む、行の先頭に記号を付ける、雛形を入れる、の3種類の動きです。</li>
-  <li>「プレビュー」で書式どおりの表示に切り替わります。入力が止まると自動で更新されます。Mac と iPad では「表示」メニューの「プレビューの表示方法」で、編集画面の横に並べるか（2画面）、編集画面と切り替えるか（1画面）を選べます。iPhone では編集画面と切り替えて表示します。</li>
-  <li>プレビュー中の URL やメールアドレスを押すと、ブラウザ（メールアドレスはメールアプリ）で開きます。</li>
-  <li>プレビューは画像を表示しません。表は簡易表示です。</li>
-</ul>
+<section class="block" id="screens"><div class="wrap">
+  <span class="eyebrow">SCREENS</span>
+  <h2>画面</h2>
+  <p class="intro">横にすべらせると、ほかの画面も見られます。</p>
+  <p class="gallery-label">Mac</p>
+  <div class="gallery">
+    <figure><img src="img/mac-01.jpg" alt="" width="1600" height="1000" loading="lazy"><figcaption>Shift-JIS・CRLF のファイルも、そのまま開いて保存</figcaption></figure>
+    <figure><img src="img/mac-02.jpg" alt="" width="1600" height="1000" loading="lazy"><figcaption>改行マーク・全角スペース・行番号を表示</figcaption></figure>
+    <figure><img src="img/mac-03.jpg" alt="" width="1600" height="1000" loading="lazy"><figcaption>検索と置換</figcaption></figure>
+    <figure><img src="img/mac-04.jpg" alt="" width="1600" height="1000" loading="lazy"><figcaption>Markdown を書きながら、横でプレビュー</figcaption></figure>
+  </div>
+  <p class="gallery-label">Mac（クリーム背景）</p>
+  <p class="intro" style="text-align:left;margin:0 0 12px;max-width:none;">「表示」メニューの「配色」で、黒背景とクリーム背景を切り替えられます。明るい部屋や、紙に近い見た目で読みたいときに。</p>
+  <div class="gallery">
+    <figure><img src="img/mac-cream-01.jpg" alt="" width="1600" height="965" loading="lazy"><figcaption>クリーム背景・黒文字で、同じメモを開いたところ</figcaption></figure>
+    <figure><img src="img/mac-cream-02.jpg" alt="" width="1600" height="1376" loading="lazy"><figcaption>Markdown のプレビューもクリーム背景に</figcaption></figure>
+  </div>
+  <p class="gallery-label">iPhone</p>
+  <div class="gallery phone">
+    <figure><img src="img/iphone-01.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>文字コードはそのまま</figcaption></figure>
+    <figure><img src="img/iphone-02.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>改行マークを表示</figcaption></figure>
+    <figure><img src="img/iphone-03.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>Markdown のプレビュー</figcaption></figure>
+    <figure><img src="img/iphone-04.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>保存していない内容を戻せる</figcaption></figure>
+  </div>
+  <p class="gallery-label">iPhone（クリーム背景）</p>
+  <div class="gallery phone">
+    <figure><img src="img/iphone-cream-01.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>クリーム背景・黒文字</figcaption></figure>
+    <figure><img src="img/iphone-cream-02.jpg" alt="" width="552" height="1200" loading="lazy"><figcaption>Markdown のプレビューもクリーム背景に</figcaption></figure>
+  </div>
+</div></section>
 
-<h2>よくある質問</h2>
-<dl>
-  <dt>Q. 開いたら文字化けしていました</dt>
-  <dd>A. 自動判別が外れた可能性があります。画面下の「開き直す…」から文字コードを指定して読み直してください（読めない文字コードを選ぶとエラーになり、本文は変わりません）。それでも直らない場合は <a href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a> へお知らせください。</dd>
-  <dt>Q. 全角スペースやタブが混ざっていないか確認したい</dt>
-  <dd>A. 「表示」メニューの「全角スペース・タブを表示」をオンにすると、全角スペースは □、タブは → で表示されます（改行マークと同じく表示だけで、本文には書き込みません）。行番号や文字の大きさも同じメニューで変えられます。</dd>
-  <dt>Q. 明るい背景で使いたい</dt>
-  <dd>A. 「表示」メニューの「配色」で、黒背景・白文字とクリーム背景・黒文字を切り替えられます。本文とプレビューの色が変わります。</dd>
-  <dt>Q. 印刷や PDF にしたい</dt>
-  <dd>A. Mac は「ファイル」メニューの「プリント…」（⌘P）で、プリントパネル左下の「PDF」から PDF として保存できます。iPhone / iPad は「PDF」ボタンで共有シートが開き、「"ファイル"に保存」やプリントが選べます。どちらも白地・黒文字で出力します。</dd>
-  <dt>Q. 前に開いたファイルをすぐ開きたい</dt>
-  <dd>A. Mac・iPhone / iPad とも、「ファイル」メニューの「最近使ったファイル」から開けます（10件まで）。</dd>
-  <dt>Q. カードリーダーや USB メモリのファイルを直接編集できますか？</dt>
-  <dd>A. できます。iPhone / iPad の「ファイル」アプリに表示される場所なら、そのまま開いて同じファイルに上書き保存できます。「ファイル」メニューの「開く…」でカード内のファイルを選び、編集後に「上書」を押してください。新しいファイルは「保存（名前を付けて）」で、保存先の「変更…」からカード内のフォルダを選ぶと直接保存されます（カードを付け直したあとは、保存先を選び直してください）。文字コード（Shift-JIS など）と改行の形式は、開いたときのまま保存します。アプリ側に写しは作らないため、カードを外したあと iPhone / iPad に中身は残りません（保存せずに閉じた書きかけだけは、次に起動したときに続けるか破棄するかを選べるよう一時的に残します）。USB-C 接続のカードリーダーで動作を確認しています。Lightning 接続のカードリーダーでは確認できていませんが、「ファイル」アプリでの扱いは同じです。Mac でも、Finder に表示されるカードや USB メモリのファイルをそのまま開いて保存できます。</dd>
-  <dt>Q. 「改行表示」を押すと本文に記号が書き込まれますか？</dt>
-  <dd>A. いいえ。改行マークは画面上に描くだけで、本文にもコピーにも保存内容にも含まれません。</dd>
-  <dt>Q. Windows で開いたときに改行が消えないようにするには？</dt>
-  <dd>A. 画面下の「改行」が CRLF になっていれば、Windows のメモ帳でも正しく改行されます。Windows で作られたファイルを開いた場合は自動で CRLF になります。</dd>
-  <dt>Q. 検索や置換はできますか？</dt>
-  <dd>A. Mac は ⌘F で画面上部に検索バーが開き、バー右端の「置き換え」にチェックを入れると置換欄が出ます。iPhone / iPad は上の「検索」から開きます。</dd>
-  <dt>Q. ファイルを開くたびにウインドウが増えます（Mac）</dt>
-  <dd>A. 現在の仕様です。不要なウインドウは ⌘W で閉じてください。未保存の変更があれば確認が出ます。</dd>
-  <dt>Q. 対応している文字コードは？</dt>
-  <dd>A. 読み込み・保存とも UTF-8（BOM あり／なし）、Shift-JIS（CP932 を含む）、EUC-JP、JIS（ISO-2022-JP）です。</dd>
-</dl>
+<section class="block alt" id="howto"><div class="wrap">
+  <span class="eyebrow">HOW TO</span>
+  <h2>使い方</h2>
+  <p class="intro">開く・直す・上書。基本はこれだけです。</p>
+  <div class="how">
+    <div class="card"><h3>Mac</h3><ol>
+      <li>ツールバーの「開く」（<kbd>⌘</kbd><kbd>O</kbd>）でファイルを選ぶか、Finder で .txt / .md / .html をダブルクリックします。</li>
+      <li>画面下に、見分けた文字コードと改行コードが出ます。</li>
+      <li>編集して「上書」（<kbd>⌘</kbd><kbd>S</kbd>）を押すと、開いたときと同じ文字コード・改行コードで保存されます。</li>
+      <li>形式を変えたいときは、画面下のメニューで文字コード・改行コード・拡張子を選び直してから「保存」（<kbd>⇧</kbd><kbd>⌘</kbd><kbd>S</kbd>）します。</li>
+    </ol></div>
+    <div class="card"><h3>iPhone・iPad</h3><ol>
+      <li>上の「ファイル」→「開く…」で、本体・iCloud Drive・外付けストレージのテキストを選びます。「ファイル」アプリでファイルを長押し →「共有」→「文字アトリエ」でも開けます。</li>
+      <li>画面下に、見分けた文字コードと改行コードが出ます。</li>
+      <li>編集して「ファイル」→「上書」を押すと、開いたときと同じ形式で、同じ場所に書き戻します。</li>
+      <li>新しく書いたものは「ファイル」→「保存（名前を付けて）」で名前を付け、保存先のフォルダを選びます。形式を変えたいときは、先に画面下のメニューで選び直します。</li>
+    </ol></div>
+  </div>
+</div></section>
 
-<h2>お問い合わせ</h2>
-<p>不具合のご報告やご要望は <a href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a> までお寄せください。</p>
-<p><a href="privacy.html">プライバシーポリシー</a></p>
+<section class="block" id="markdown"><div class="wrap">
+  <span class="eyebrow">MARKDOWN</span>
+  <h2>Markdown を書くとき</h2>
+  <ul class="md-list">
+    <li>形式が .md のとき、ツールバーの下に記法のボタン列（見出し・太字・箇条書き・番号・引用・リンク・表・コードなど）が出ます。選んだ文字を囲む、行の先頭に記号を付ける、ひな形を入れる、の3通りの動きです。</li>
+    <li>「プレビュー」で書式どおりの表示に切り替わり、入力が止まると自動で更新されます。Mac と iPad では「表示」メニューの「プレビューの表示方法」で、編集画面の横に並べる（2画面）か、切り替える（1画面）かを選べます。iPhone は切り替えて表示します。</li>
+    <li>プレビューの中の URL やメールアドレスを押すと、ブラウザ（メールアドレスはメールアプリ）で開きます。</li>
+    <li>プレビューは画像を表示しません。表は簡易表示です。</li>
+  </ul>
+  <h2 style="margin-top:56px;">こんな方に</h2>
+  <ul class="for">
+    <li>思いついたことを、すぐにメモしたい</li>
+    <li>機能の多いエディタより、軽くて分かりやすいものがいい</li>
+    <li>Shift-JIS や CRLF のテキストを、そのままの形式で編集したい</li>
+  </ul>
+</div></section>
+
+<section class="block alt" id="faq"><div class="wrap">
+  <span class="eyebrow">FAQ</span>
+  <h2>よくある質問</h2>
+  <div class="faq">
+    <details><summary>開いたら文字化けしていました</summary><div class="a"><p>自動の見分けが外れた可能性があります。画面下の「開き直す…」から文字コードを指定して読み直してください（読めない文字コードを選ぶとエラーになり、本文は変わりません）。それでも直らないときは <a href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a> へお知らせください。</p></div></details>
+    <details><summary>対応している文字コードは？</summary><div class="a"><p>読み込み・保存とも UTF-8（BOM あり／なし）、Shift-JIS（CP932 を含む）、EUC-JP、JIS（ISO-2022-JP）です。改行コードは CRLF と LF です。</p></div></details>
+    <details><summary>Windows で開いたときに改行が消えないようにするには？</summary><div class="a"><p>画面下の「改行」が CRLF になっていれば、Windows のメモ帳でも正しく改行されます。Windows で作られたファイルを開いた場合は、自動で CRLF になります。</p></div></details>
+    <details><summary>「改行表示」を押すと、本文に記号が書き込まれますか？</summary><div class="a"><p>いいえ。改行マークは画面に描くだけで、本文にもコピーにも保存内容にも含まれません。全角スペース（□）とタブ（→）の表示も同じです。</p></div></details>
+    <details><summary>全角スペースやタブが混ざっていないか確かめたい</summary><div class="a"><p>「表示」メニューの「全角スペース・タブを表示」をオンにすると、全角スペースは □、タブは → で表示されます。行番号や文字の大きさも同じメニューで変えられます。iPhone・iPad では2本指のピンチでも文字の大きさを変えられます。</p></div></details>
+    <details><summary>明るい背景で使いたい</summary><div class="a"><p>「表示」メニューの「配色」で、黒背景・白文字とクリーム背景・黒文字を切り替えられます。本文とプレビューの色が変わります。</p></div></details>
+    <details><summary>検索や置換はできますか？</summary><div class="a"><p>Mac は <kbd>⌘</kbd><kbd>F</kbd> で画面上部に検索バーが開き、バーの右端の「置き換え」にチェックを入れると置換の欄が出ます。iPhone・iPad は上の「検索」から開きます。</p></div></details>
+    <details><summary>印刷や PDF にしたい</summary><div class="a"><p>Mac は「ファイル」メニューの「プリント…」（<kbd>⌘</kbd><kbd>P</kbd>）で、プリントパネル左下の「PDF」から PDF として保存できます。iPhone・iPad は「ファイル」→「PDF」で共有シートが開き、「"ファイル"に保存」やプリントが選べます。どちらも白地・黒文字で出力します。</p></div></details>
+    <details><summary>前に開いたファイルをすぐ開きたい</summary><div class="a"><p>Mac・iPhone・iPad とも、「ファイル」メニューの「最近使ったファイル」から開けます（10件まで）。</p></div></details>
+    <details><summary>カードリーダーや USB メモリのファイルを直接編集できますか？</summary><div class="a">
+      <p>できます。iPhone・iPad の「ファイル」アプリに表示される場所なら、そのまま開いて同じファイルに上書き保存できます。「ファイル」→「開く…」でカードの中のファイルを選び、編集したら「上書」を押してください。</p>
+      <p>新しいファイルは「保存（名前を付けて）」で、保存先の「変更…」からカードの中のフォルダを選ぶと直接保存されます（カードを付け直したあとは、保存先を選び直してください）。文字コード（Shift-JIS など）と改行の形式は、開いたときのまま保存します。</p>
+      <p>アプリ側に写しは作らないため、カードを外したあと iPhone・iPad に中身は残りません（保存せずに閉じた書きかけだけは、次に起動したときに続けるか捨てるかを選べるよう、一時的に残します）。</p>
+      <p>USB-C のカードリーダーで動くことを確かめています。Lightning のカードリーダーでは確かめていませんが、「ファイル」アプリでの扱いは同じです。Mac でも、Finder に出るカードや USB メモリのファイルをそのまま開いて保存できます。</p></div></details>
+    <details><summary>保存しないままアプリを閉じてしまいました（iPhone・iPad）</summary><div class="a"><p>次に開いたとき「保存していない内容があります」と出ます。「編集を続ける」で書きかけに戻れます。いらなければ「破棄する」、あとで決めるなら「あとで決める」を選んでください。</p></div></details>
+    <details><summary>ファイルを開くたびにウインドウが増えます（Mac）</summary><div class="a"><p>いまの仕様です。いらないウインドウは <kbd>⌘</kbd><kbd>W</kbd> で閉じてください。保存していない変更があれば確認が出ます。</p></div></details>
+  </div>
+</div></section>
+
+<section class="block" id="contact"><div class="wrap contact">
+  <span class="eyebrow">CONTACT</span>
+  <h2>お問い合わせ</h2>
+  <div class="card">
+    <p>不具合のご報告やご要望は、メールでお寄せください。</p>
+    <p><a class="btn ghost" href="mailto:emc.hs07@gmail.com">emc.hs07@gmail.com</a></p>
+    <p style="font-size:.9rem;color:var(--mute);margin:14px 0 0;">文字アトリエは外部と通信せず、データを集めません。くわしくは <a href="privacy.html">プライバシーポリシー</a> をご覧ください。</p>
+  </div>
+</div></section>
+</main>
 
 <!-- この作者のほかのアプリ（ここから） -->
 <section class="other-apps" style="margin-top:3rem;">
