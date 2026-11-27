@@ -110,6 +110,12 @@
   footer { text-align:center; color:var(--mute); font-size:.85rem; padding:40px 24px 56px; margin-top:56px; border-top:1px solid var(--line); }
   @media (max-width:640px) { .top nav { display:none; } .hero { padding-top:48px; } section.block { padding:48px 0; } }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+  .notecard { display:block; text-align:left; text-decoration:none; color:var(--text); transition:transform .15s ease; }
+  .notecard:hover { transform:translateY(-2px); }
+  .nc-site { display:inline-block; font-size:.75rem; font-weight:700; color:var(--bg); background:var(--text); border-radius:6px; padding:1px 8px; }
+  .nc-title { display:block; font-weight:700; font-size:1.1rem; line-height:1.5; margin:10px 0 6px; }
+  .nc-lead { display:block; color:var(--mute); font-size:.92rem; }
+  .nc-go { display:block; color:var(--accent); font-weight:700; margin-top:10px; }
 </style>
 <!-- リンクを貼ったときに出る紹介カード（OGP） -->
 <meta property="og:type" content="website">
@@ -124,7 +130,7 @@
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#"><img src="img/icon.png" alt="" width="28" height="28">文字アトリエ</a>
-  <nav aria-label="ページ内の移動"><a href="#features">特長</a><a href="#screens">画面</a><a href="#howto">使い方</a><a href="#markdown">Markdown</a><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a></nav>
+  <nav aria-label="ページ内の移動"><a href="#features">特長</a><a href="#screens">画面</a><a href="#howto">使い方</a><a href="#markdown">Markdown</a><a href="#faq">よくある質問</a><a href="#note">作った話</a><a href="#contact">お問い合わせ</a></nav>
 </div></header>
 
 <main>
@@ -251,7 +257,18 @@
   </div>
 </div></section>
 
-<section class="block" id="contact"><div class="wrap contact">
+<section class="block" id="note"><div class="wrap contact">
+  <span class="eyebrow">STORY</span>
+  <h2>作った話を読む</h2>
+  <a class="card notecard" href="https://note.com/hideki_sato_apps/n/n1fd2bee804e5">
+    <span class="nc-site">note</span>
+    <span class="nc-title">Mac を始めて半年。Windows で25年使ったエディタの感覚が欲しくて、AI と一緒に作った</span>
+    <span class="nc-lead">文字アトリエを作ったきっかけと、作りながら決めたことを書きました。</span>
+    <span class="nc-go">記事を読む →</span>
+  </a>
+</div></section>
+
+<section class="block alt" id="contact"><div class="wrap contact">
   <span class="eyebrow">CONTACT</span>
   <h2>お問い合わせ</h2>
   <div class="card">
